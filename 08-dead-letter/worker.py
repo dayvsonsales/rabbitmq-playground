@@ -9,7 +9,6 @@ channel = connection.channel()
 
 channel.queue_declare(queue='task_queue1',
   arguments={
-  "x-message-ttl": 1000,
   "x-dead-letter-exchange" : "dlx",
   "x-dead-letter-routing-key" : "dl",
 }
@@ -23,7 +22,6 @@ def callback(ch, method, properties, body):
     ch.basic_reject(delivery_tag = method.delivery_tag, requeue=False)
     
 
-channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue='task_queue1', on_message_callback=callback)
 
 channel.start_consuming()

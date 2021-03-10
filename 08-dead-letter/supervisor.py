@@ -65,7 +65,6 @@ def callback(ch, method, properties, body):
             else:
                 ch.basic_reject(delivery_tag = method.delivery_tag)
 
-channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue='supervisor', on_message_callback=callback)
 
 channel.start_consuming()

@@ -8,7 +8,14 @@ channel = connection.channel()
 
 message = ' '.join(sys.argv[1:]) or "Hello World!"
 
-for i in range(0, 5000):
+channel.queue_declare(queue='task_queue1',
+  arguments={
+  "x-dead-letter-exchange" : "dlx",
+  "x-dead-letter-routing-key" : "dl",
+}
+)
+
+for i in range(0, 100000):
     channel.basic_publish(exchange='',
                         routing_key='task_queue1',
                         body=message + str(i),
